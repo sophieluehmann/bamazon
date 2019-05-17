@@ -20,6 +20,8 @@ connection.connect(function(err) {
   
 });
 
+
+
 function listItems() {
     connection.query("SELECT * FROM bamazon.products", function(err, res) {
       if (err) throw err;
@@ -29,29 +31,36 @@ function listItems() {
       console.log("id: " + res[i].item_id + " || product: " + res[i].product_name + " || department: " + res[i].department_name + " || price: " + res[i].price + " || stock quantity: " + res[i].stock_quantity);
       
       };
-      connection.end();
+     
     });
+ 
+    
 }
-
 listItems();
+idSearch();
 
 function idSearch() {
     inquirer
       .prompt({
         name: "item_id",
         type: "input",
-        message: "id number?"
+        message: "Product id number:\n"
       })
-      .then(function(answer) {
-          console.log(answer.item_id);
-        var query = "SELECT item_id, product_name FROM bamazon.products WHERE item_id = ?";
-        connection.query(query, {item_id: answer.item_id}, function(err, res) {
-          console.log(res);
-        });
-      });
+      .then(function(input) {
+        var item = input.item_id;
+        var query = "SELECT * FROM products WHERE ?";
+        connection.query(query, {item_id: item}, function(err, data) {
+           if (err) throw err;
+           var productInfo = data[0];
+            console.log("How many " + productInfo.product_name + " do you want to buy?");
+
+        }
+        );
+    }
+    );
 };
 
-idSearch();
+
 
 
 /*function runSearch() {
