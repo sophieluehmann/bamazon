@@ -26,7 +26,7 @@ function listItems() {
   
       // Log all results of the SELECT statement
       for (i = 0; i < res.length; i++) {
-      console.log("id=" + res[i].item_id + " product=" + res[i].product_name + " department=" + res[i].department_name + " price=" + res[i].price + " stock quantity=" + res[i].stock_quantity);
+      console.log("id: " + res[i].item_id + " || product: " + res[i].product_name + " || department: " + res[i].department_name + " || price: " + res[i].price + " || stock quantity: " + res[i].stock_quantity);
       
       };
       connection.end();
@@ -34,6 +34,25 @@ function listItems() {
 }
 
 listItems();
+
+function idSearch() {
+    inquirer
+      .prompt({
+        name: "item_id",
+        type: "input",
+        message: "id number?"
+      })
+      .then(function(answer) {
+          console.log(answer.item_id);
+        var query = "SELECT item_id, product_name FROM bamazon.products WHERE item_id = ?";
+        connection.query(query, {item_id: answer.item_id}, function(err, res) {
+          console.log(res);
+        });
+      });
+};
+
+idSearch();
+
 
 /*function runSearch() {
   inquirer
@@ -74,23 +93,7 @@ listItems();
     });
 }
 
-function artistSearch() {
-  inquirer
-    .prompt({
-      name: "artist",
-      type: "input",
-      message: "What artist would you like to search for?"
-    })
-    .then(function(answer) {
-      var query = "SELECT position, song, year FROM top5000 WHERE ?";
-      connection.query(query, { artist: answer.artist }, function(err, res) {
-        for (var i = 0; i < res.length; i++) {
-          console.log("Position: " + res[i].position + " || Song: " + res[i].song + " || Year: " + res[i].year);
-        }
-        runSearch();
-      });
-    });
-}
+
 
 function multiSearch() {
   var query = "SELECT artist FROM top5000 GROUP BY artist HAVING count(*) > 1";
