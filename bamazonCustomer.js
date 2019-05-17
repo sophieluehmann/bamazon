@@ -52,12 +52,19 @@ function idSearch() {
         connection.query(query, {item_id: item}, function(err, data) {
            if (err) throw err;
            var productInfo = data[0];
-            console.log("How many " + productInfo.product_name + " do you want to buy?");
-
-        }
-        );
-    }
-    );
+           inquirer
+            .prompt({
+            name: "quantity",
+            type: "input",
+            message: "How many " + productInfo.product_name + " do you want to buy?"
+            })
+            .then(function(input) {
+                var amount = input.quantity;
+                var query = "SELECT * FROM products"
+            })
+        });
+    
+    })
 };
 
 
