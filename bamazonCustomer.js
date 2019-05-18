@@ -52,6 +52,7 @@ function idSearch() {
         connection.query(query, {item_id: item}, function(err, data) {
            if (err) throw err;
            var productInfo = data[0];
+           console.log("product quantity: " + productInfo.stock_quantity);
            inquirer
             .prompt({
             name: "quantity",
@@ -61,13 +62,25 @@ function idSearch() {
             .then(function(input) {
                 var amount = input.quantity;
                 var query = "SELECT * FROM products"
+                if (amount <= productInfo.stock_quantity) {
+                    var updateQuery = "UPDATE products SET stock_quantity=" + (productInfo.stock_quantity - amount) + " WHERE item_id=" + item;
+                    connection.query(updateQuery, function(err, data) {
+                        if (err) throw err;
+                        console.log("Your order for " + amount + " " + productInfo.product_name + " has been placed.");
+                        console.log("Total is: $" + (amount * productInfo.price));
+                        connection.end();
+                    })
+                }
+                 else {
+                    console.log("insufficient quantity");
+                    connection.end();
+                }
+                
             })
         });
     
     })
 };
-
-
 
 
 /*function runSearch() {

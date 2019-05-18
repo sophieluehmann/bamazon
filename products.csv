@@ -1,0 +1,11 @@
+item_id,product_name,department_name,price,stock_quantity
+1,mascara,cosmetics,9,70
+2,lightbulbs,household,8,64
+3,cheetos,grocery,9,70
+4,socks,apparel,7,65
+5,flour,grocery,5,51
+6,bandages,health,3,60
+7,laundry-detergent,household,12,43
+8,notebook,office,6,50
+9,paperclips,office,4,34
+10,shampoo,health,7,52
