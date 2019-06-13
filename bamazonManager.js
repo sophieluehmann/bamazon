@@ -62,27 +62,85 @@ function inventoryAdd() {
         inquirer
         .prompt({
             type: "list",
-            name: "product",
+            name: "product_name",
             message: "What product do you want to add inventory?",
             choices: productNames
         })
-        .then(function(answer) {
-            console.log(answer);
-        })
+        .then(function(input) {
+            var itemAdd = input.product_name;
+            var query = "SELECT * FROM bamazon.products WHERE ?";
+            connection.query(query, {product_name:itemAdd}, function(err, data) {
+              if (err) throw err;
+              var productInfo = data[0];
+              console.log("stock quantity: " + productInfo.stock_quantity);
+              inquirer
+              .prompt({
+                type: 'input',
+                name: 'quantity',
+                message: "How many? " + itemAdd + " do you want to add?"
+              })
+              .then(function(answer) {
+                var addQuantity = answer.quantity;
+                var productInfo = data[0];
+                var addQuery = "UPDATE bamazon.products SET stock_quantity=" + (productInfo.stock_quantity + parseInt(addQuantity)) + " WHERE product_name='" + productInfo.product_name + "'";
+                connection.query(addQuery, function(err, data) {
+                   if (err) throw err;
+                   console.log("added");
+                   nextThing();
+                });
+              })
+            });
 
-        nextThing();
+        })
+      })
+};
+
+function addProduct() {
+  inquirer
+  .prompt({
+    type: "input",
+    name: "product_name",
+    message: "What product would you like to add? "
+  })
+  .then(function(input) {
+    var item_name = input.product_name;
+    inquirer
+    .prompt({
+      type: "input",
+      name: "department_name",
+      message: "What department is " + item_name + " in? "
     })
-    
-   /* var quantity = [
-        {
-            type: 'input',
-            name: 'quantity',
-            message: "Name of artist: ",
-            input: String
-        },
-    ]
-    connection.query
-    */
+    .then(function(input) {
+      var department = input.department_name;
+      inquirer
+      .prompt({
+        type: "input",
+        name: "price",
+        message: "What would you like to set as the price per unit? "
+      })
+      .then(function(input) {
+      var price = parseInt(input.price);
+      inquirer
+      .prompt({
+        type: "input",
+        name: "stock_quantity",
+        message: "How many would you like to add? "
+      })
+      .then(function(input){
+        var quantity = parseInt(input.stock_quantity);
+        var sql = "INSERT INTO bamazon.products (product_name, department_name, price, stock_quantity) VALUES ?";
+        var values = [[item_name, department, price, quantity]];
+        console.log(sql + values);
+        connection.query(sql, [values], function(err) {
+          if (err) throw err;
+          console.log("added " + values);
+          nextThing();
+        })
+  
+      })
+    })
+  })
+})
 }
 
 function runSearch() {
@@ -113,14 +171,11 @@ function runSearch() {
         inventoryAdd();
         break;
 
-      /*case "Search for a specific song":
-        songSearch();
+      case "Add New Product":
+        addProduct();
         break;
-          
-      case "exit":
-        connection.end();
-        break;*/
       }
+
     })
 }
 
@@ -143,7 +198,7 @@ function nextThing() {
 
             case "Close":
                 connection.end();
-                break;
+          
         }
     })
 }
