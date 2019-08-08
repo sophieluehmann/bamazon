@@ -19,9 +19,9 @@ Now run `npm install mysql` and `npm install inquirer` to install the necessary 
 
 Open a terminal and run either commands: 
 
-`bamazonCustomer.js` (customer storefront)
+`node bamazonCustomer.js` (customer storefront)
 
-`bamazonManager.js` (manager operations)
+`node bamazonManager.js` (manager operations)
 
-- 
+
 
