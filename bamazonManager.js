@@ -129,7 +129,6 @@ function addProduct() {
         var quantity = parseInt(input.stock_quantity);
         var sql = "INSERT INTO bamazon.products (product_name, department_name, price, stock_quantity) VALUES ?";
         var values = [[item_name, department, price, quantity]];
-        console.log(sql + values);
         connection.query(sql, [values], function(err) {
           if (err) throw err;
           console.log("added " + values);

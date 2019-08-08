@@ -2,6 +2,8 @@
 
 A Node.js and MySQL storefront and management operator for an online market.
 
+![](bamazonGif.gif)
+
 ## How to use bamazon:
 
 Clone this repo to your desktop.
@@ -13,4 +15,13 @@ Once these steps are done, navigate to the `db` run the `schema.sql` and `seeds.
 
 Now run `npm install mysql` and `npm install inquirer` to install the necessary dependencies.
 
-###Node.js
+### Node.js
+
+Open a terminal and run either commands: 
+
+`bamazonCustomer.js` (customer storefront)
+
+`bamazonManager.js` (manager operations)
+
+- 
+
